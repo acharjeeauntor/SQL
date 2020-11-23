@@ -1,0 +1,249 @@
+CREATE Database DBName;
+Create Table TableName(int ID autoincrement,......)
+
+ALTER Table TableName ADD ColumnName DataType;
+ALTER Table TableName Drop ColumnName;
+ALTER Table TableName ALTER Column ColumnName DataType;
+Drop Table tableName;
+-------------
+CREATE TABLE emp1(
+empo_id int AUTO_INCREMENT,
+f_name VARCHAR(10),
+l_name VARCHAR(10),
+CONSTRAINT emp_PRimaryKey PRIMARY KEY (empo_id,f_name)
+)
+
+CREATE TABLE emp2(
+emp_id int,
+f_name VARCHAR(10),
+l_name VARCHAR(10)
+)
+
+
+ALTER TABLE emp2
+ADD CONSTRAINT emp_primary PRIMARY KEY(emp_id)
+
+----------------
+
+CREATE Table product(
+p_id int PRIMARY KEY AUTO_INCREMENT,
+p_name VARCHAR(10) NOT null,
+    p_price int NOT null
+);
+
+CREATE TABLE orders
+(
+o_id int PRIMARY KEY AUTO_INCREMENT,
+p_id int NOT NULL,
+Person_name VARCHAR(10) NOT null,
+    
+   CONSTRAINT FK_key
+   FOREIGN KEY (p_id)
+   REFERENCES product(p_id)
+    
+);
+
+-------------
+CREATE Table product1(
+p_id int PRIMARY KEY AUTO_INCREMENT,
+p_name VARCHAR(10) NOT null,
+    p_price int NOT null
+);
+
+CREATE TABLE orders1
+(
+o_id int PRIMARY KEY AUTO_INCREMENT,
+p_id int NOT NULL,
+Person_name VARCHAR(10) NOT null
+);
+
+ALTER TABLE orders1
+ADD CONSTRAINT FK_key1
+   FOREIGN KEY (p_id)
+   REFERENCES product1(p_id)
+
+----------
+INSERT INTO product(p_name,p_price) VALUES('egg',40)
+INSERT INTO product VALUES(2,'ice',50)  [second way te sob column field e data bosate hbe must]
+
+-------------
+
+INSERT INTO product1(p_id,p_name,p_price)(SELECT * FROM product);
+
+----------
+UPDATE product1 SET p_price=60 WHERE p_id = 2
+UPDATE product1 SET p_price=70 ,p_name='ice-cream' WHERE p_id=2
+UPDATE product1 SET p_price=70  [update for all data in the table]
+-------------
+DELETE FROM product1 WHERE p_id=2
+DELETE FROM product1   [delete all from product1 table]
+----------
+SELECT * From product1 where p_id not IN (3)
+SELECT p_name AS productName From product1 where p_price>=55 AND p_price<= 80
+SELECT * From product1 where p_price BETWEEN 55 AND 80
+SELECT * From product1 where p_price>=55 AND p_price<= 80
+SELECT * From product1 where p_price>=55 OR p_price<= 80
+
+---------------------
+SELECT * FROM `product1` WHERE p_name LIKE 'egg%'
+SELECT * FROM `product1` WHERE p_name LIKE 'e%a'\
+
+---------------------
+SELECT CASE(p_name)
+WHEN 'egg' THEN 'Chicken-Egg'
+WHEN 'ice' THEN 'ICE_CREAM'
+ELSE 'NOTHING'
+END
+FROM product1
+-----------------------------
+---------------------------------
+	JOIN
+
+
+   >> Inner join
+
+SELECT product1.p_name,orders.o_id,orders.date
+FROM product1
+INNER JOIN orders
+ON product1.p_id=orders.p_id
+ORDER BY orders.o_id
+
+
+SELECT p.p_name,o.o_id,o.date
+FROM product1 AS p
+INNER JOIN orders AS o
+ON p.p_id=o.p_id
+ORDER BY o.o_id
+
+
+SELECT *
+FROM product1 AS p
+INNER JOIN orders AS o
+WHERE p.p_price >=90
+ORDER BY o.o_id
+
+
+
+     >> Left join/Left Outer join
+left join er meaning holo left or j table er sathe join korte bola hbe oi table er sob data gulo show korbe ,seta join table er match hok ba na hok ,sob left er sob data show
+korbe but join table er sathe match na hole seta join table er j value gulo pabe na sei feild gulo Null diye fillup hobe..
+
+
+SELECT product1.p_name,orders.o_id,orders.date
+FROM product1
+LEFT OUTER JOIN orders
+ON product1.p_id=orders.p_id
+
+
+
+SELECT p.p_name AS ProductName,o.o_id AS OrderID ,o.date AS OrderDate
+FROM product1 AS p
+LEFT OUTER JOIN orders AS o
+ON p.p_id=o.p_id
+
+
+     >> Right join/Right Outer join
+Right join er meaning holo Right or j table er sathe join korte bola hbe oi table er sob data gulo show korbe ,seta join table er match hok ba na hok ,sob Right er sob data show
+korbe but join table er sathe match na hole seta join table er j value gulo pabe na sei feild gulo Null diye fillup hobe..
+
+SELECT product1.p_name,orders.o_id,orders.date
+FROM product1
+RIGHT OUTER JOIN orders
+ON product1.p_id=orders.p_id
+
+
+SELECT p.p_name AS ProductName,o.o_id AS OrderID ,o.date AS OrderDate
+FROM product1 AS p
+RIGHT OUTER JOIN orders AS o
+ON p.p_id=o.p_id
+
+
+	>> Full Outer join
+
+SELECT product1.p_name,orders.o_id,orders.date
+FROM product1
+FULL OUTER JOIN orders
+ON product1.p_id=orders.p_id
+
+
+
+
+             >>Cross join/cartisia join
+SELECT product1.p_name,orders.o_id,orders.date
+FROM product1
+CROSS JOIN orders
+ORDER BY product1.p_id
+
+
+
+-----------------
+
+                      Functions
+
+SELECT CAST('10' AS INT) * 20 AS CASTRES
+
+SELECT ELT(3, 'Cat', 'Dog', 'Horse') AS 'Result' 		--- in MYSQL
+SELECT CHOOSE(3, 'Cat', 'Dog', 'Horse') AS 'Result';	---in SQLSERVER
+
+SELECT IF(1>10,'TRUE','FALSE') AS RESULT	--in MYSQL
+SELECT IIF(1>10,'TRUE','FALSE') AS RESULT	--in SQLSERVER
+
+SELECT    ABS(-10) AS 'ABS'
+	RAND() AS 'RANDOM'
+	EXP(4) AS 'EXP'
+	FLOOR(4.66) AS 'FLOOR'
+	CELLING(4.33) AS 'CELLING'
+	SIGN(-8) AS 'SIGN'
+	SQRT(2.56) AS 'SQRT'
+	POWER(2,3) AS 'power'
+	ROUND(2.5677888,2) AS 'ROUND'
+
+
+SELECT AVG(p_price) FROM product1
+
+SELECT MIN(p_price) FROM product1
+
+SELECT SUM(p_price) FROM product1
+SELECT COUNT(p_price) FROM product1
+SELECT MAX(p_price) FROM product1
+
+		String function
+SELECT REPLACE('iuhsdjus','uhs','zzz')
+SELECT LEFT('iuhsdjus',3)
+SELECT RIGHT('iuhsdjus',3)
+SELECT REVERSE('iuhsdjus')
+SELECT LTRIM('             abc                   ')
+SELECT RTRIM('             abc                   ')
+SELECT TRIM('             abc                   ')
+SELECT UPPER('abc')
+SELECT LOWER('ABC')
+
+----------------------------
+
+		Aggregate Function
+
+SELECT p_price AS ProductPrice,COUNT(*) AS Count FROM product1
+GROUP BY p_price
+
+SELECT p_price AS ProductPrice,p_name,COUNT(*) AS Count FROM product1
+GROUP BY p_price
+
+SELECT p_price AS ProductPrice,p_name,COUNT(*) AS Count FROM product1
+GROUP BY p_price
+HAVING p_price>50
+
+
+-------------------------------
+CREATE PROCEDURE `getProduct`() NOT DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER
+BEGIN 
+SELECT p_name from product1; 
+END
+
+
+
+
+
+
+
+
+
