@@ -143,5 +143,32 @@ DELIMITER ;
 CALL AddEmp(110,'jhdjd','dfd','1965-02-19','F',6900,108,3)
 
 
+----------------Views
+
+> Use for Secure Your data
+> One of virtual Table
+>contains rows and colums ,just like a real table
+
+CREATE VIEW empView AS SELECT * FROM employee where employee.sex = 'F';
+
+SELECT * FROM empview;
+
+INSERT INTO employee VALUES(112,'Use For View','dfd','1965-02-19','F',6900,106,3);
+DELETE From employee WHERE employee.emp_id = 112;
+
+
+
+-----------------Temporary Table
+
+CREATE TEMPORARY TABLE EmpTemp(
+  id int AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(10)
+);
+
+INSERT INTO EmpTemp VALUES(1,'Auntor');
+SELECT * FROM EmpTemp;
+DROP TEMPORARY TABLE EmpTemp;
+
+
 
 

@@ -120,3 +120,180 @@ INSERT INTO works_with VALUES(102, 406, 15000);
 INSERT INTO works_with VALUES(105, 406, 130000);
 
 
+
+
+
+
+
+
+SELECT * FROM employee
+ORDER BY employee.salary DESC;
+
+SELECT * FROM employee
+ORDER BY employee.sex,employee.first_name,employee.last_name;
+
+SELECT * FROM employee
+LIMIT 5;
+
+SELECT DISTINCT sex FROM employee;
+SELECT COUNT(employee.emp_id) FROM employee;
+SELECT COUNT(employee.super_id) FROM employee;
+SELECT COUNT(employee.emp_id) FROM employee WHERE employee.sex='F' AND employee.birth_day>'1971-01-01';
+SELECT avg(employee.salary) FROM employee;
+SELECT SUM(employee.salary) FROM employee;
+SELECT COUNT(employee.sex),sex FROM employee GROUP BY sex;
+SELECT works_with.emp_id,(works_with.total_sales) FROM works_with GROUP BY works_with.emp_id;
+SELECT works_with.client_id,(works_with.total_sales) 
+FROM works_with GROUP BY works_with.client_id;
+
+SELECT * FROM client
+WHERE client.client_name LIKE '%LLC';
+
+SELECT * FROM branch_supplier
+WHERE branch_supplier.supplier_name LIKE '%Label%';
+
+SELECT * FROM employee
+WHERE employee.birth_day LIKE '____-10%';
+
+
+SELECT employee.first_name As Details from employee
+UNION
+SELECT client.client_name from client;
+
+SELECT employee.salary AS Total FROM employee
+UNION
+SELECT works_with.total_sales FROM works_with;
+
+INSERT INTO branch VALUES(4,'Buffalo',NULL,NULL);
+
+SELECT employee.emp_id,employee.first_name,employee.last_name,branch.branch_name
+FROM employee
+JOIN branch
+ON employee.emp_id = branch.mgr_id;
+
+SELECT employee.emp_id,employee.first_name,employee.last_name,branch.branch_name
+FROM employee
+LEFT JOIN branch
+ON employee.emp_id = branch.mgr_id;
+
+SELECT employee.emp_id,employee.first_name,employee.last_name,branch.branch_name
+FROM employee
+RIGHT JOIN branch
+ON employee.emp_id = branch.mgr_id;
+
+SELECT employee.emp_id,employee.first_name,employee.last_name,branch.branch_name
+FROM employee
+CROSS JOIN branch;
+
+SELECT employee.first_name,employee.last_name from 
+employee where 
+employee.emp_id IN 
+(SELECT works_with.emp_id  from works_with
+WHERE works_with.total_sales >30000);
+
+SELECT client.client_name from client Where client.branch_id In (
+SELECT branch.branch_id from branch WHERE branch.mgr_id = 102
+);
+
+
+DELETE FROM employee 
+WHERE employee.emp_id = 102;
+SELECT * from branch;
+
+DELETE FROM branch 
+WHERE branch.branch_id = 2;
+SELECT * from branch_supplier;
+
+DELIMITER $$
+CREATE 
+	TRIGGER my_trigger1 BEFORE INSERT
+    ON employee
+    FOR EACH ROW BEGIN
+		INSERT INTO trigger_test VALUES ('added new employee');
+	END $$
+DELIMITER ;
+
+INSERT INTO employee VALUES(109,'Oscar','dfd','1965-02-19','M',6900,106,3);
+
+SELECT * FROM trigger_test;
+
+DROP TRIGGER my_trigger1;
+
+
+
+--------------- StoreProcedure------------
+---- Without param
+
+DELIMITER //
+
+CREATE PROCEDURE Getemp()
+BEGIN
+	SELECT employee.first_name As FName,employee.last_name AS LName FROM employee;
+END //
+
+DELIMITER ;
+
+CALL Getemp();
+
+
+--------------- StoreProcedure------------
+---- Withparam
+
+DELIMITER //
+
+CREATE PROCEDURE AddEmp(
+id int,
+fname varchar(10),
+lname VARCHAR(10),
+bday DATE,
+sex VARCHAR(5),
+Salary int,
+sid int,
+bid int
+)
+BEGIN
+ INSERT INTO employee VALUES(id,fname,lname,bday,sex,salary,sid,bid);
+END //
+
+DELIMITER ;
+
+CALL AddEmp(110,'jhdjd','dfd','1965-02-19','F',6900,108,3);
+
+
+
+
+
+CREATE VIEW empView AS SELECT * FROM employee where employee.sex = 'F';
+
+SELECT * FROM empview;
+
+INSERT INTO employee VALUES(112,'Use For View','dfd','1965-02-19','F',6900,106,3);
+DELETE From employee WHERE employee.emp_id = 112;
+
+
+INSERT INTO empview VALUES(112,'Use For View','dfd','1965-02-19','F',6900,106,3);
+DELETE From empview WHERE empview.emp_id = 112;
+
+
+
+
+
+CREATE TEMPORARY TABLE EmpTemp(
+  id int AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(10)
+);
+
+INSERT INTO EmpTemp VALUES(1,'Auntor');
+SELECT * FROM EmpTemp;
+DROP TEMPORARY TABLE EmpTemp;
+
+
+
+
+
+
+
+
+
+
+
